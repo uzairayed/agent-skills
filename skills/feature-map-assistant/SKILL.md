@@ -24,7 +24,7 @@ In multi-device personal assistant environments (such as Grok Bot), users speak 
 
 ### 2. Cold-Start Bootstrap
 - If no `FEATURE_MAP.md` exists yet in `/workspace/FEATURE_MAP.md` or your persistent store:
-  1. Initialize it from `templates/CONTEXT_MAP.template.md`.
+  1. Initialize it from `templates/FEATURE_MAP.template.md`.
   2. Populate any already-known machine IDs (e.g., from `ListMachines`), active repo paths, or connected workspace resources.
   3. Never hardcode private IDs inside `SKILL.md` itself—keep all user-specific IDs inside `FEATURE_MAP.md`.
 
