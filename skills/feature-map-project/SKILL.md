@@ -1,42 +1,45 @@
 ---
 name: feature-map-project
-description: Use whenever the user refers to a product feature, UI surface, route, modal, or domain concept in their own everyday shorthand (including non-English UI labels), when starting work in a repository, or when a file path is discovered or moved during a task. Maps human feature shorthand directly to exact codebase paths in a concise FEATURE_MAP.md.
+description: Use when the user refers to a product feature, page, route, modal, or component in their own shorthand or UI labels, when starting work in a repository, or when a file path is found or moved during a task. Maps feature shorthand to exact codebase paths in FEATURE_MAP.md.
 ---
 
-# Feature Map (Project Edition)
+# Feature map for projects
 
-Maintain a concise, high-signal `FEATURE_MAP.md` (under ~100 lines) at the repository root (or `.agents/FEATURE_MAP.md`) that maps the developer's everyday shorthand for product surfaces, modals, flows, and API handlers directly to exact file paths.
+Keep a `FEATURE_MAP.md` under 100 lines at the repository root or `.agents/FEATURE_MAP.md` that maps the user's everyday words for pages, modals, flows, and API routes to exact file paths.
 
-## Why This Exists
-Developers speak in product and UI shorthand (`"the checkout drawer"`, `"the pricing toggle"`, `"the Stripe webhook"`, or localized UI copy like `"Comprar ahora button"`), while codebases organize files by technical layers (`src/features/billing/components/PlanSelector.tsx`). Without a feature map, coding agents burn thousands of tokens and extra tool calls running broad `rg` and `glob` searches at the start of every session.
+## Why this exists
 
-## When to Use
-- The user references a feature, page, modal, component, API route, or domain concept using everyday shorthand or localized UI text.
-- You are starting a task in a repository and need to locate the relevant entrypoints quickly.
-- You just finished building a new feature area, renamed/moved a mapped file during refactoring, or spent multiple searches tracking down a non-obvious entrypoint.
+Developers name features by their product terms and UI labels, such as "the checkout drawer", "the pricing toggle", "the Stripe webhook", or localized button copy. Codebases group files by technical directories such as `src/features/billing/components/PlanSelector.tsx`. Without a map, coding agents run repeated `rg` and `glob` searches at the start of every task to find the same files.
+
+## When to use
+
+- The user names a feature, page, modal, component, or API route using product shorthand or UI text.
+- You are starting a task in a repository and need the relevant files.
+- You just built a new feature, moved or renamed a mapped file, or ran several searches to find an entrypoint.
 
 ## Workflow
 
-### 1. Consult First (Before Broad Search)
-- Before running repo-wide `rg`, `grep`, or `find` searches for a feature name, check whether `FEATURE_MAP.md` (or `.agents/FEATURE_MAP.md`) exists.
-- If it exists, read it first and resolve the user's shorthand directly to the listed file paths, routes, and state stores.
+### 1. Read the map before searching
 
-### 2. Cold-Start Bootstrap
-- If no `FEATURE_MAP.md` exists and the user invokes this skill (or asks to map the repo):
-  1. Scan the repository's top-level routes and entrypoints (`app/`, `src/pages/`, `src/components/`, `src/features/`, `server/`, `prisma/schema.prisma`, etc.).
-  2. Create `FEATURE_MAP.md` at the repo root using `templates/FEATURE_MAP.template.md` as the starting structure.
-  3. Populate it with the core user-facing routes, high-traffic UI components, state stores, and API handlers in under 100 lines.
+Check whether `FEATURE_MAP.md` or `.agents/FEATURE_MAP.md` exists before running repo-wide `rg`, `grep`, or `find` searches for a feature name. If it exists, read it first and open the listed file paths, routes, and state stores directly.
 
-### 3. Act Immediately When Verified
-- When `FEATURE_MAP.md` points to a concrete file path that exists on disk, open and work on it directly.
-- Do **not** interrupt the user to re-confirm a mapped file path that exists and matches the task.
-- Only ask for clarification when a mapped file was deleted/moved and no clear replacement exists, or when the user's request is genuinely ambiguous between two distinct features.
+### 2. Create the map if missing
 
-### 4. Self-Healing & Progressive Capture
-- **Moved or renamed files:** If you move, split, or rename a file during a task, update its corresponding line in `FEATURE_MAP.md` before finishing.
-- **New features or hard-to-find entrypoints:** When you build a new feature surface or spend multiple searches locating a non-obvious component, add a 1-line entry mapping the user's natural phrasing to the exact path.
+If no `FEATURE_MAP.md` exists when this skill runs:
+1. Scan the repository's top-level routes and directories such as `app/`, `src/pages/`, `src/components/`, `src/features/`, and `server/`.
+2. Create `FEATURE_MAP.md` at the repo root from `templates/FEATURE_MAP.template.md`.
+3. Fill in the main user-facing routes, modals, state stores, and API handlers in under 100 lines.
+
+### 3. Act when the path exists
+
+When `FEATURE_MAP.md` points to a file path that exists on disk, open it and start working. Do not ask the user to confirm a mapped path that exists and matches the task. Ask only if the mapped file was deleted or moved with no clear replacement, or if the user's request could mean two different features.
+
+### 4. Update the map when files change
+
+If you move, split, or rename a file during a task, update its row in `FEATURE_MAP.md` before finishing. When you build a new feature or spend multiple searches finding a non-obvious file, add a row mapping the user's phrasing to the file path.
 
 ## Rules for `FEATURE_MAP.md`
-- **Keep it under ~100 lines:** High signal, zero prose fluff. Every entry is `"user shorthand" -> exact/file/path.tsx — 1-line responsibility note`.
-- **Use the user's exact vocabulary:** Include the words the user actually types, including localized UI labels, button text, or internal team nicknames alongside the English feature name.
-- **Verify live code:** The map gets you to the right file in one hop; always read the target file to verify its current implementation before editing.
+
+- Keep the file under 100 lines. Each row maps the user's words to an exact file path and a short responsibility note.
+- Record the exact words the user types, including localized UI labels, button text, or team nicknames alongside the English feature name.
+- Read the target file to check its current code before editing.
